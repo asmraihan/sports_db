@@ -1,18 +1,24 @@
 const searchAllData = () =>{
     const inputSearch = document.getElementById('input-search')
     const inputValue = inputSearch.value;
+    document.getElementById('spinner').classList.remove('hidden')
     // console.log(inputValue)
     const url = `https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?p=${inputValue}`
     fetch(url)
     .then(res => res.json())
     .then(data => showPlayerData(data.player))
+
+
 }
 
 const showPlayerData = (players) =>{
    document.getElementById('input-search').value = "";
     const cardContainer = document.getElementById('card-container')
+    document.getElementById('spinner').classList.add('hidden')
     cardContainer.innerHTML = "";
-    
+
+  
+
     for(player of players){
         const card = document.createElement('div')
         const {strThumb, strPlayer, strNationality, strSport, strWeight, idPlayer} = player /* desctructuring */
@@ -32,13 +38,12 @@ const showPlayerData = (players) =>{
       </div>`
       cardContainer.appendChild(card)
     }
+  
 }
 
-// const deleteCard = () =>{
-  
-// }
 
 const getDetails = (id) =>{
+  document.getElementById('spinner').classList.remove('hidden')
     const url = `https://www.thesportsdb.com/api/v1/json/3/lookupplayer.php?id=${id}`
     fetch(url)
     .then(res => res.json())
@@ -64,7 +69,7 @@ const displayDetails = (data) =>{
     const div =  document.createElement('div');
     div.innerHTML = `
     <div class="card card-side bg-base-100 shadow-xl">
-  <figure class="w-2/3"><img src="${strThumb ? strThumb : "No thumb found"}" alt="Movie"/></figure>
+  <figure class="w-2/3"><img src="${strThumb ? strThumb : "No thumb found"}" alt="playerimg"/></figure>
   <div class="card-body">
     <h2 class="card-title">${strPlayer}</h2>
     <p>Country : ${strNationality}</p>
@@ -75,5 +80,7 @@ const displayDetails = (data) =>{
 <p class="py-8 text-lg">${strDescriptionEN.slice(0,500)+" . . ."}</p>
     `
   detailsContainer.appendChild(div)
+  document.getElementById('spinner').classList.add('hidden')
+
 }
 
